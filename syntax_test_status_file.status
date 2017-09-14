@@ -1,0 +1,53 @@
+# SYNTAX TEST "Packages/User/Dart Status File/Status File.sublime-syntax"
+
+# A comment at the beginning of the line.
+# ^ source.status-file comment.line
+# <- punctuation.definition.comment
+
+# dart2js does not implement the Dart 2.0 static type errors yet.
+[ $   compiler == dart2js ]
+# <- punctuation.definition.header.begin.status-file
+#^^^^^^^^^^^^^^^^^^^^^^^^^ meta.header.status-file
+#                         ^ punctuation.definition.header.end.status-file
+
+[ $compiler == dart2js ]
+# ^ punctuation.definition.variable.status-file
+#  ^^^^^^^^ variable.status-file
+#              ^^^^^^^ variable.other.constant.status-file
+
+[ $a == b || $a != b && !$c ]
+#    ^^ keyword.operator.logical.status-file
+#         ^^ keyword.operator.logical.status-file
+#               ^^ keyword.operator.logical.status-file
+#                       ^ keyword.operator.logical.status-file
+
+[ ($a) ]
+# ^ punctuation.section.group.begin.status-file
+#    ^ punctuation.section.group.end.status-file
+#  ^^ meta.group.status-file
+
+abstract_beats/arguments_test/01: Pass, Fail
+# <- entity.name.path.status-file
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.path.status-file
+#                               ^ punctuation.separator.colon.status-file
+#                                 ^^^^ constant.language.status.status-file
+#                                     ^ punctuation.separator.comma.status-file
+#                                       ^^^^ constant.language.status.status-file
+
+# Issue numbers after entries are recognized.
+path: Pass # Issue 1234
+#                  ^^^^ comment.block.issue.status-file
+path: Pass # 1234
+#            ^^^^ comment.block.issue.status-file
+# Numbers not on entry lines are not parsed as issues: Issue 12345
+#                                                            ^^^^^ source.status-file comment.line
+
+abstract_exact_selector_test/01: MissingCompileTimeError
+abstract_factory_constructor_test/00: MissingCompileTimeError
+abstract_getter_test/01: MissingCompileTimeError
+abstract_override_adds_optional_args_concrete_subclass_test: MissingCompileTimeError
+abstract_override_adds_optional_args_concrete_test: MissingCompileTimeError
+abstract_override_adds_optional_args_supercall_test: MissingCompileTimeError
+abstract_syntax_test/00: MissingCompileTimeError
+additional_interface_adds_optional_args_concrete_subclass_test: MissingCompileTimeError
+additional_interface_adds_optional_args_concrete_test: MissingCompileTimeError

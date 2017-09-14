@@ -1,0 +1,75 @@
+%YAML 1.2
+---
+file_extensions:
+  - status
+scope: source.status-file
+contexts:
+  main:
+    - match: '#'
+      scope: punctuation.definition.comment.status-file
+      push: line_comment
+
+    - match: '\['
+      scope: punctuation.definition.header.begin.status-file
+      push:
+        - meta_scope: meta.header.status-file
+        - match: '\]'
+          scope: punctuation.definition.header.end.status-file
+          pop: true
+        - include: header
+
+    - match: '^\s*([a-zA-Z0-9_/]+)(:)'
+      captures:
+        1: entity.name.path.status-file
+        2: punctuation.separator.colon.status-file
+      push: status_list
+
+  status_list:
+    - match: '(#)\s*.*?([0-9]+).*'
+      scope: comment.line.status-file
+      captures:
+        1: punctuation.definition.comment.status-file
+        2: comment.block.issue.status-file
+
+    - match: '(#)\s*.*'
+      scope: comment.line.status-file
+      captures:
+        1: punctuation.definition.comment.status-file
+
+    - match: '\b[a-zA-Z0-9_]+\b'
+      scope: constant.language.status.status-file
+
+    - match: ','
+      scope: punctuation.separator.comma.status-file
+
+    - match: $
+      pop: true
+
+  header:
+    # TODO: Could hardcode the known set of valid variable names and values and
+    # highlight others as errors.
+
+    - match: '(\$)\s*([a-z0-9_]+)'
+      captures:
+        1: punctuation.definition.variable.status-file
+        2: variable.status-file
+
+    - match: '[a-z0-9_]+'
+      scope: variable.other.constant.status-file
+
+    - match: '==|!=|!|&&|\|\|'
+      scope: keyword.operator.logical.status-file
+
+    - match: '\('
+      scope: punctuation.section.group.begin.status-file
+      push:
+        - meta_scope: meta.group.status-file
+        - match: '\)'
+          scope: punctuation.section.group.end.status-file
+          pop: true
+        - include: header
+
+  line_comment:
+    - meta_scope: comment.line.status-file
+    - match: $
+      pop: true
